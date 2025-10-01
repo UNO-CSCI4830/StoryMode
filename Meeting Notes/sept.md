@@ -27,7 +27,7 @@ Members attended: Judas, Truman, Auggie, Tim, Laurence, Jayden, Kira
 
 Completing from requirements sheet in ascending order by 3 for tasks^^^
 Discussed Stakeholders and requirements
-Debated if a web server is a stakeholder : It is not, but a game server is because it is a critical technology that involves many stakeholders
+Debated if a web server is a stakeholder: It is not, but a game server is because it is a critical technology that involves many stakeholders
 Discussing what is functional and non-functional for requirements
 
 Meeting date: September 30, 2025
