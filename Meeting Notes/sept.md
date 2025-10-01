@@ -13,8 +13,9 @@ Members attended: Judas, Truman, Auggie, Tim, Laurence, Jayden
 - Book club hosting site rather than site-wide book club
 - Prioritizing creation of book club, input number of members
 - Rather than individual accounts – generate a code when making the club, can access the club via that code
-_indent
-**Recording the presentation**__
+  
+**Recording the presentation**
+
 - Judas: discuss overview and project vision
 - Auggie, Tim: discuss database dev and QA
 - Kira, Truman, Judas: discuss GUI
