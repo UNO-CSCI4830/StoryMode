@@ -3,7 +3,7 @@ Meeting date: September 16, 2025
 Members attended: Judas, Truman, Auggie, Tim, Laurence, Jayden
 --------------------------------------------------------------
 
-* Seems like weekly meeting time – either Monday/Tuesday evenings, maybe Sunday evening
+- Seems like weekly meeting time – either Monday/Tuesday evenings, maybe Sunday evening
 - Possibly go for a pixel art approach for the GUI
 - App will be multiple pages
 - Functionality: Create book club (add members, choose book(s)), enter notes as you make progress in reading, view existing book clubs that you’ve created
@@ -13,7 +13,7 @@ Members attended: Judas, Truman, Auggie, Tim, Laurence, Jayden
 - Book club hosting site rather than site-wide book club
 - Prioritizing creation of book club, input number of members
 - Rather than individual accounts – generate a code when making the club, can access the club via that code
-indent
+_indent
 **Recording the presentation**__
 - Judas: discuss overview and project vision
 - Auggie, Tim: discuss database dev and QA
