@@ -37,5 +37,5 @@ Members attended: Judas, Truman, Auggie, Tim, Laurence, Jayden, Kira
 
 Meeting date: September 30, 2025
 ================================
-Members attended: Judas, Truman, Auggie, Tim, Laurence, Jayden, Kira
+Members attended: Judas, Truman, Auggie, Tim, Laurence, Kira
 --------------------------------------------------------------------
