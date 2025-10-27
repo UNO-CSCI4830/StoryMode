@@ -4,31 +4,31 @@
 
 ```bash
 
-\# Create a virtual environment
+# Create a virtual environment
 
 python -m venv .venv
 
 
 
-\# Activate it (Windows)
+# Activate it (Windows)
 
-.\\.venv\\Scripts\\activate
+.\.venv\Scripts\activate
 
 
 
-\# Activate it (macOS / Linux)
+# Activate it (macOS / Linux)
 
 source .venv/bin/activate
 
 
 
-\# Install Dependencies
+# Install Dependencies
 
 pip install -r requirements.txt
 
 
 
-\# Run FastAPI Server
+# Run FastAPI Server
 
 python -m uvicorn app.main:app --reload --port 8000
 
