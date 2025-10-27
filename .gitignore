@@ -1,0 +1,20 @@
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Local stuff
+.env
+*.db
+*.sqlite3
+
+# Editor junk
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
