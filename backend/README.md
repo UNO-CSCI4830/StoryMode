@@ -15,8 +15,14 @@ macOS/Linux:
 source .venv/bin/activate
 ```
 ## Install Dependencies & Run
-- pip install -r requirements.txt
-- python -m uvicorn app.main:app --reload --port 8000
+Install backend dependencies with:
+```bash
+pip install -r requirements.txt
+```
+Then run the web server with:
+```bash
+python -m uvicorn app.main:app --reload --port 8000
+```
 
 
 
