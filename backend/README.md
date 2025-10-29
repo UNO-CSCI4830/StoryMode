@@ -1,12 +1,11 @@
 # Installation
 
-## Set up & Activate Virtual Environment 
-Create a virtual environmment with:
+## Set Up Virtual Environment 
+Create a virtual environment with:
 ```bash
 python -m venv .venv
 ```
-Then activate it.
-
+## Activate Virtual Environment 
 Windows:
 ```bash
 .venv\Scripts\activate
