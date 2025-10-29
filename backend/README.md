@@ -5,7 +5,7 @@ Create a virtual environmment with:
 ```bash
 python -m venv .venv
 ```
-Then activate it.
+Then activate it.  
 Windows:
 ```bash
 .venv\Scripts\activate
