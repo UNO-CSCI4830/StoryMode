@@ -2,8 +2,9 @@
 
 ## Set up Virtual Environment
 Create a virtual environmment with 
-'python -m venv .venv'
-
+```bash
+python -m venv .venv
+```
 ## Activate Virtual Environment
 - .venv\Scripts\activate (Windows)
 - source .venv/bin/activate (macOS/Linux)
