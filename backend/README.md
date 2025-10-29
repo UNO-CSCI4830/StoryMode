@@ -5,12 +5,14 @@ Create a virtual environmment with:
 ```bash
 python -m venv .venv
 ```
-Then activate it:
+Then activate it.
+Windows:
 ```bash
-.venv\Scripts\activate (Windows)
+.venv\Scripts\activate
 ```
+macOS/Linux:
 ```bash
-source .venv/bin/activate (macOS/Linux)
+source .venv/bin/activate
 ```
 ## Install Dependencies & Run
 - pip install -r requirements.txt
