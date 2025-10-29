@@ -1,7 +1,7 @@
 # Installation
 
 ## Set up Virtual Environment
-Create a virtual environmment with 
+Create a virtual environmment with:
 ```bash
 python -m venv .venv
 ```
