@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+/* 8‑bit vibe: pixelated rendering + arcade-like font if available */
+:root { --scanline: repeating-linear-gradient(0deg, rgba(0,0,0,0.04) 0px, rgba(0,0,0,0.04) 1px, transparent 1px, transparent 3px); }
+html, body, #root { height: 100%; }
+img { image-rendering: pixelated; }
+
+/* Utility tweaks for that chunky shadow look */
+.shadow-chunky { box-shadow: 6px 6px 0 0 rgba(0,0,0,1); }
+.shadow-chunky-lg { box-shadow: 12px 12px 0 0 rgba(0,0,0,1); }
