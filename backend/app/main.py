@@ -37,3 +37,18 @@ if users:
 @app.get("/ping")
 def ping():
     return {"ok": True}
+
+#Added by Kira: simple test login endpoint so frontend can verify
+#connection to backend without changing existing auth.
+#Description: This lets React frontend send a username/password and get a simple response
+#without touching existing bookclub or user routes
+@app.post("/api/v1/login-test")
+def login_test(data: dict):
+    username = data.get("username")
+    password = data.get("password")
+
+    #test credentials now, real auth later
+    if username == "testuser" and password == "password123":
+        return {"ok": True, "username": username}
+    
+    return {"ok": False, "error": "invalid credentials"}
