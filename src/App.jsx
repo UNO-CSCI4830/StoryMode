@@ -1,12 +1,10 @@
+import React from 'react'
 import { Book, Users, Sparkles, MessageSquare, Heart, Search } from 'lucide-react'
 import PixelButton from './components/PixelButton.jsx'
 import PixelCard from './components/PixelCard.jsx'
 import Section from './components/Section.jsx'
 import NavLink from './components/NavLink.jsx'
-
-// Clubs
 import ClubCard from './components/ClubCard.jsx'
-import ClubsPage from './ClubsPage.jsx'
 
 const px = {
   frame: 'border-8 border-black rounded-3xl shadow-chunky-lg',
@@ -15,29 +13,6 @@ const px = {
 const colors = {
   bg: 'from-amber-200 via-amber-300 to-amber-200',
   ink: 'text-zinc-900',
-}
-
-function scrollToClubs() {
-  const el = document.getElementById('clubs')
-  el?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-  // focus the name input a moment later
-  setTimeout(() => document.getElementById('club-name')?.focus(), 500)
-}
-
-function Feature({ icon: Icon, title, desc }) {
-  return (
-    <PixelCard>
-      <div className="flex items-start gap-4">
-        <div className="shrink-0 p-3 bg-green-300 border-4 border-black rounded-xl shadow-chunky">
-          <Icon className="w-6 h-6" />
-        </div>
-        <div>
-          <h3 className="font-extrabold text-lg mb-1">{title}</h3>
-          <p className="text-zinc-700 leading-relaxed">{desc}</p>
-        </div>
-      </div>
-    </PixelCard>
-  )
 }
 
 export default function App() {
@@ -66,11 +41,10 @@ export default function App() {
             <NavLink href="#features">Features</NavLink>
             <NavLink href="#clubs">Clubs</NavLink>
             <NavLink href="#faq">FAQ</NavLink>
-            <PixelButton onClick={scrollToClubs}>
+            <PixelButton>
               <Sparkles className="w-5 h-5" />
               Start a Club
             </PixelButton>
-
           </nav>
         </div>
       </header>
@@ -86,11 +60,10 @@ export default function App() {
               An 8‑bit, 80s‑inspired home for readers. Create pixel‑perfect clubs, vote on the next read, and chat like it's 1989 — minus the dial‑up.
             </p>
             <div className="mt-6 flex flex-wrap gap-4">
-              <PixelButton onClick={scrollToClubs}>
+              <PixelButton>
                 <Sparkles className="w-5 h-5" />
                 Create a Club
               </PixelButton>
-
               <PixelButton className="bg-amber-300">
                 <Search className="w-5 h-5" />
                 Explore Clubs
@@ -121,9 +94,19 @@ export default function App() {
         </div>
       </Section>
 
-      {/* Live clubs from backend */}
-      <Section id="clubs" title="Your clubs">
-        <ClubsPage />
+      {/* Sample clubs */}
+      <Section id="clubs" title="Trending clubs">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <ClubCard name="Neo‑Noir Nights" genre="Mystery / Thriller" members={128} />
+          <ClubCard name="Byte‑Size Classics" genre="Literary" members={86} />
+          <ClubCard name="Dungeon Readers" genre="Fantasy / RPG tie‑ins" members={203} />
+          <ClubCard name="Synthwave Sci‑Fi" genre="Science Fiction" members={164} />
+          <ClubCard name="Page & Pixel" genre="Indie / Zines" members={57} />
+          <ClubCard name="Tea & Tomes" genre="Cozy" members={92} />
+        </div>
+        <div className="mt-8 text-center">
+          <PixelButton>See all clubs</PixelButton>
+        </div>
       </Section>
 
       {/* Footer */}
@@ -142,5 +125,21 @@ export default function App() {
         </div>
       </footer>
     </div>
+  )
+}
+
+function Feature({ icon: Icon, title, desc }) {
+  return (
+    <PixelCard>
+      <div className="flex items-start gap-4">
+        <div className="shrink-0 p-3 bg-green-300 border-4 border-black rounded-xl shadow-chunky">
+          <Icon className="w-6 h-6" />
+        </div>
+        <div>
+          <h3 className="font-extrabold text-lg mb-1">{title}</h3>
+          <p className="text-zinc-700 leading-relaxed">{desc}</p>
+        </div>
+      </div>
+    </PixelCard>
   )
 }
