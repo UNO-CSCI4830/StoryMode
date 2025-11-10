@@ -5,6 +5,10 @@ import PixelCard from './components/PixelCard.jsx'
 import Section from './components/Section.jsx'
 import NavLink from './components/NavLink.jsx'
 import ClubCard from './components/ClubCard.jsx'
+import {BrowserRouter as Router, Route, Routes} from 'react-router-dom'
+
+import Login from './pages/Login.jsx'
+//import Home from './pages/Home.jsx'
 
 const px = {
   frame: 'border-8 border-black rounded-3xl shadow-chunky-lg',
@@ -41,6 +45,10 @@ export default function App() {
             <NavLink href="#features">Features</NavLink>
             <NavLink href="#clubs">Clubs</NavLink>
             <NavLink href="#faq">FAQ</NavLink>
+            <PixelButton>
+              <Users className='w-5 h-5' />
+              Log in/Sign up
+            </PixelButton>
             <PixelButton>
               <Sparkles className="w-5 h-5" />
               Start a Club
