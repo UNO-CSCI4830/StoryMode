@@ -70,8 +70,9 @@ export default function Login() {
                             setSuccess(true)
                         }}>
                             <div className="mb-3">
-                                <label className="block text-sm font-bold mb-1">Username</label>
+                                <label htmlFor="username" className="block text-sm font-bold mb-1">Username</label>
                                 <input
+                                    id="username"
                                     type="text"
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
@@ -80,8 +81,9 @@ export default function Login() {
                                 />
                             </div>
                             <div className="mb-3">
-                                <label className="block text-sm font-bold mb-1">Password</label>
+                                <label htmlFor="password" className="block text-sm font-bold mb-1">Password</label>
                                 <input
+                                    id="password"
                                     type="password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
