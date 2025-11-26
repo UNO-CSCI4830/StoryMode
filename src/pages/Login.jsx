@@ -70,8 +70,10 @@ export default function Login() {
                             setSuccess(true)
                         }}>
                             <div className="mb-3">
-                                <label className="block text-sm font-bold mb-1">Username</label>
+                                <label htmlFor="username" className="block text-sm font-bold mb-1">Username</label>
                                 <input
+                                    id="username"
+                                    name="username"
                                     type="text"
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
@@ -80,8 +82,10 @@ export default function Login() {
                                 />
                             </div>
                             <div className="mb-3">
-                                <label className="block text-sm font-bold mb-1">Password</label>
+                                <label htmlFor="password" className="block text-sm font-bold mb-1">Password</label>
                                 <input
+                                    id="password"
+                                    name="password"
                                     type="password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
@@ -96,10 +100,10 @@ export default function Login() {
                                     {loading ? 'Logging in...' : success ? 'Logged in' : 'Log in'}
                                 </PixelButton>
                                 <PixelButton type="button" onClick={() => { setName(''); setPassword(''); setError(null); setSuccess(false); }}>
-                                    Reset (debug)
+                                    Reset
                                 </PixelButton>
                             </div>
-                            {success && <div className="mt-3 text-sm text-green-700">Login successful.</div>}
+                            {success && <div className="mt-3 text-sm text-green-700">Login simulated</div>}
                         </form>
                     </PixelCard>
 
