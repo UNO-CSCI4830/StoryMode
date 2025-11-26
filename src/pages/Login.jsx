@@ -24,9 +24,9 @@ const Login = () => {
     // Add authentication logic
 
     return (
-        <div className={'min-h-screen ${colors.ink}'} style={{fontFamily: '"Press Start 2P, system-ui, ui-sans-serif, sans-serif'}}>
+        <div className={`min-h-screen ${colors.ink}`} style={{fontFamily: '"Press Start 2P, system-ui, ui-sans-serif, sans-serif'}}>
             {/* Background */}
-            <div className={'fixed inset-0 -z-10 bg-gradient-to-b ${colors.bg}'}>
+            <div className={`fixed inset-0 -z-10 bg-gradient-to-b ${colors.bg}`}>
                 <div className="absolute inset-0" style ={{
                     background:
                         'radial-gradient(60% 60% at 50% 20%, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0) 70%), radial-gradient(60% 60% at 100% 100%, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0) 70%)',

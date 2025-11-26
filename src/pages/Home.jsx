@@ -5,6 +5,7 @@ import PixelCard from '../components/PixelCard'
 import Section from '../components/Section'
 import NavLink from '../components/NavLink'
 import ClubCard from '../components/ClubCard'
+import logo from '../../public/logo.png'
 
 const px = {
   frame: 'border-8 border-black rounded-3xl shadow-chunky-lg',
@@ -17,9 +18,9 @@ const colors = {
 
 export default function Home() {
     return (
-        <div className={'min-h-screen ${colors.ink}'} style={{fontFamily: '"Press Start 2P, system-ui, ui-sans-serif, sans-serif'}}>
+        <div className={`min-h-screen ${colors.ink}`} style={{fontFamily: '"Press Start 2P, system-ui, ui-sans-serif, sans-serif'}}>
             {/* Background */}
-            <div className={'fixed inset-0 -z-10 bg-gradient-to-b ${colors.bg}'}>
+            <div className={`fixed inset-0 -z-10 bg-gradient-to-b ${colors.bg}`}>
                 <div className="absolute inset-0" style ={{
                     background:
                         'radial-gradient(60% 60% at 50% 20%, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0) 70%), radial-gradient(60% 60% at 100% 100%, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0) 70%)',
@@ -31,7 +32,7 @@ export default function Home() {
                 <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
                     <a href="#" className="flex items-center gap-3">
                         <img
-                            src="/logo.png"
+                            src={logo}
                             alt="Story Mode logo"
                             className="w-12 h-12 border-4 border-black rounded-xl shadow-chunky"
                         />
@@ -75,8 +76,8 @@ export default function Home() {
                         </div>
                     </div>
                     <div className="justify-self-center">
-                        <div className={'${px.frame} bg-amber-100 p-4'}>
-                            <img src="./src/logo.png" alt="Story Mode lamp + shelf logo" className="w-64 h-64 mx-auto" />
+                        <div className={`${px.frame} bg-amber-100 p-4`}>
+                            <img src={logo} alt="Story Mode lamp + shelf logo" className="w-64 h-64 mx-auto" />
                         </div>
                     </div>
                 </div>
