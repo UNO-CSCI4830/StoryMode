@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Book, Users, Sparkles, MessageSquare, Heart, Search } from 'lucide-react'
 import PixelButton from '../components/PixelButton'
 import PixelCard from '../components/PixelCard'
@@ -17,6 +18,7 @@ const colors = {
 }
 
 export default function Home() {
+    const navigate = useNavigate()
     return (
         <div className={`min-h-screen ${colors.ink}`} style={{fontFamily: '"Press Start 2P, system-ui, ui-sans-serif, sans-serif'}}>
             {/* Background */}
@@ -42,9 +44,13 @@ export default function Home() {
                         <NavLink href="#features">Features</NavLink>
                         <NavLink href="#clubs">Clubs</NavLink>
                         <NavLink href="#faq">FAQ</NavLink>
+                        <PixelButton onClick={() => navigate('/login')}>
+                            <Users className='w-5 h-5' />
+                            Log in
+                        </PixelButton>
                         <PixelButton>
                             <Users className='w-5 h-5' />
-                            Log in/Sign up
+                            Sign up
                         </PixelButton>
                         <PixelButton>
                             <Sparkles className="w-5 h-5" />
