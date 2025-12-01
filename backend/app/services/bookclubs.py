@@ -52,7 +52,13 @@ class BookClubService:
         self.db.commit()
         return {"deleted": club_id}
 
-    def list_clubs(self, owner_id: str):
+    def all_clubs(self):
+        rows = self.db.execute(
+            select(BookClub)
+        ).scalars().all()
+        return rows
+    
+    def my_clubs(self, owner_id: str):
         rows = self.db.execute(
             select(BookClub).where(BookClub.owner_id == owner_id)
         ).scalars().all()

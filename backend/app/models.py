@@ -1,9 +1,11 @@
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
-from sqlalchemy import String, Text, Index, func
+from sqlalchemy import String, Text, Index, Boolean, func
+
 
 class Base(DeclarativeBase):
     # Base class for ORM models
     pass
+
 
 class BookClub(Base):
     # Create bookclubs table
@@ -19,9 +21,13 @@ class BookClub(Base):
         Index("ix_owner_name_ci", owner_id, func.lower(name), unique=True),
     )
 
+
 class User(Base):
     # Create users table
     __tablename__ = "users"
 
     id: Mapped[str] = mapped_column(String, primary_key=True)
     user_name: Mapped[str] = mapped_column(String(80), nullable=False)
+    password_hash: Mapped[str] = mapped_column(String(255), nullable=False)
+    is_admin: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    is_active: Mapped[bool] = mapped_column(Boolean, nullable=False)

@@ -17,3 +17,16 @@ class BookClubOut(BaseModel):
 class UserFormat(BaseModel):
     id: str
     user_name: str
+    is_admin: bool
+
+class UserCreate(BaseModel):
+    user_name: str
+    password: str
+
+class UserOut(BaseModel):
+    id: str
+    user_name: str
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
