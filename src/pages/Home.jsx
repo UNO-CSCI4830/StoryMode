@@ -48,7 +48,7 @@ export default function Home() {
                             <Users className='w-5 h-5' />
                             Log in
                         </PixelButton>
-                        <PixelButton>
+                        <PixelButton onClick={() => navigate('/signup')}>
                             <Users className='w-5 h-5' />
                             Sign up
                         </PixelButton>
