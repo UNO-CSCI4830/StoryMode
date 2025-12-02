@@ -3,7 +3,7 @@ import { Book, Users } from 'lucide-react'
 import PixelCard from './PixelCard.jsx'
 import PixelButton from './PixelButton.jsx'
 
-export default function ClubCard({ name, genre, members }) {
+export default function ClubCard({ name, genre, members, onOpen }) {
   return (
     <PixelCard className="h-full">
       <div className="flex items-center gap-4 mb-4">
@@ -12,16 +12,17 @@ export default function ClubCard({ name, genre, members }) {
         </div>
         <div>
           <h4 className="font-black text-xl leading-6">{name}</h4>
-          <p className="text-zinc-700">{genre}</p>
+          <p className="text-zinc-700 text-sm">{genre}</p>
         </div>
       </div>
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2 text-zinc-800">
+        <div className="flex items-center gap-2 text-zinc-800 text-sm">
           <Users className="w-5 h-5" />
           <span className="font-bold">{members}</span>
         </div>
-        <PixelButton>View club</PixelButton>
+        <PixelButton onClick={onOpen}>View club</PixelButton>
       </div>
     </PixelCard>
   )
 }
+
