@@ -70,15 +70,18 @@ Users can register, browse existing clubs, and create new ones — all managed t
 
 ## Setup
 
-### Open a Terminal (GitHub Codespaces or Locally)
+### Open a Terminal Locally
 
 #### **Make sure you have docker installed first: https://www.docker.com/products/docker-desktop/**
 You can check if you have it installed by getting the version inside your terminal:
 ```bash
 docker --version
 ```
+Once Docker is installed you can run StoryMode using the command below.
 
-Inside your terminal:
+#### To run:
 ```bash
 docker compose up --build
 ```
+
+The link to the website will appear inside the terminal: http://localhost:5173/
