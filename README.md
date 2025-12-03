@@ -70,14 +70,13 @@ Users can register, browse existing clubs, and create new ones — all managed t
 
 ## Setup
 
-### Run in GitHub Codespaces
-This is the easiest way to get StoryMode running.
+### Open a Terminal (GitHub Codespaces or Locally)
 
-#### **Backend (FastAPI)**
-Open **Terminal 1** in your Codespace:
+#### **Make sure you have docker installed first: https://www.docker.com/products/docker-desktop/**
+You can check if you have it installed by getting the version inside your terminal:
 ```bash
-cd backend
-python -m venv venv
-source venv/bin/activate       # For Linux/Mac (Codespaces)
-pip install -r requirements.txt
-uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+docker --version
+
+Inside your terminal:
+```bash
+docker compose up --build
