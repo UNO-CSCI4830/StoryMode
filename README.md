@@ -76,7 +76,9 @@ Users can register, browse existing clubs, and create new ones — all managed t
 You can check if you have it installed by getting the version inside your terminal:
 ```bash
 docker --version
+```
 
 Inside your terminal:
 ```bash
 docker compose up --build
+```
