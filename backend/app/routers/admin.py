@@ -13,7 +13,7 @@ from app.core.security import (
 from app.services.bookclubs import BookClubService
 from app.services.users import UserService
 
-from app.schemas import UserCreate, UserOut, UserFormat, BookClubOut
+from app.schemas import UserCreate, UserOut, UserFormat, BookClubOutAdmin
 from app.core.security import require_admin
 
 router = APIRouter(prefix='/admin', tags=['admin'])
@@ -28,13 +28,12 @@ def get_bookclub_service(db: Session = Depends(get_db)) -> BookClubService:
     # Create fresh DB Session
     return BookClubService(db)
 
-
 # Route to create a new admin account
 @router.post (
-    '/create_admin', 
+    '', 
     status_code = status.HTTP_201_CREATED, 
     response_model = UserOut,
-    summary = 'Create new admin account.'
+    summary = 'CREATE new admin account.'
 )
 
 def create_admin (
@@ -58,9 +57,9 @@ def create_admin (
     
 # Route to list all users
 @router.get (
-    "/list_users",
+    "/users",
     response_model = List[UserFormat],
-    summary="List all users."
+    summary="GET all users."
 )
 def list_users (
     svc: UserService = Depends(get_user_service),
@@ -70,9 +69,9 @@ def list_users (
 
 # Route to list all bookclubs
 @router.get(
-    "/list_clubs",
-    response_model=List[BookClubOut],
-    summary="List all book clubs.",
+    "/clubs",
+    response_model=List[BookClubOutAdmin],
+    summary="GET all book clubs. (Public and Private)",
 )
 def my_bookclubs(
     current_user: UserFormat = Depends(require_user),
@@ -83,9 +82,9 @@ def my_bookclubs(
 
 # Route to delete a user
 @router.delete (
-    "users/{user_id}",
+    "/users/{user_id}",
     status_code = status.HTTP_200_OK,
-    summary="Delete a user."
+    summary="DELETE a user."
 )
 def delete_user (
     user_id: str,
@@ -96,13 +95,13 @@ def delete_user (
 
 # Route to delete a bookclub
 @router.delete (
-    "bookclubs/{club_id}",
+    "/bookclubs/{club_id}",
     status_code = status.HTTP_200_OK,
-    summary="Delete a club."
+    summary="DELETE a book club."
 )
-def delete_bookclub(
+def admin_delete_bookclub(
     club_id: str,
-    owner_id: str = Depends(require_user),
     svc: BookClubService = Depends(get_bookclub_service),
+    _ = Depends(require_admin)
 ):
-    return svc.delete_club(club_id, owner_id)
+    return svc.admin_delete_club(club_id)

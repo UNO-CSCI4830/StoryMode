@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from typing import List
 
 from app.core.db import get_db
-from app.schemas import BookClubCreate, BookClubOut, UserFormat
+from app.schemas import BookClubCreateIn, BookClubCreateOut, BookClubOutAll, UserFormat
 from app.services.bookclubs import BookClubService
 from app.core.security import require_user
 
@@ -13,16 +13,15 @@ def get_service(db: Session = Depends(get_db)) -> BookClubService:
     # Create fresh DB Session
     return BookClubService(db)
 
-
 # Create a bookclub
 @router.post(
     "",
-    response_model=BookClubOut,
+    response_model=BookClubCreateOut,
     status_code=status.HTTP_201_CREATED,
-    summary="Create a new book club.",
+    summary="CREATE a new book club.",
 )
 def create_bookclub(
-    payload: BookClubCreate = Body(...),
+    payload: BookClubCreateIn = Body(...),
     current_user: UserFormat = Depends(require_user),
     svc: BookClubService = Depends(get_service),
 ):
@@ -33,7 +32,7 @@ def create_bookclub(
 @router.delete(
     "/{club_id}", 
     status_code=status.HTTP_200_OK, 
-    summary="Delete a book club you own."
+    summary="DELETE a book club you own."
 )
 def delete_bookclub(
     club_id: str,
@@ -43,15 +42,14 @@ def delete_bookclub(
     owner_id: str = current_user.id
     return svc.delete_club(club_id, owner_id)
 
-# List all bookclubs for a user
+# Route to list all bookclubs
 @router.get(
     "",
-    response_model=List[BookClubOut],
-    summary="List your book clubs.",
+    response_model=List[BookClubOutAll],
+    summary="GET all book clubs. (Public Directory)",
 )
 def my_bookclubs(
     current_user: UserFormat = Depends(require_user),
     svc: BookClubService = Depends(get_service)
 ):
-    owner_id: str = current_user.id
-    return svc.my_clubs(owner_id)
+    return svc.all_clubs()

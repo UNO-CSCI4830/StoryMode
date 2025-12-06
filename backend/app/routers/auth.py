@@ -15,13 +15,13 @@ from app.core.helpers import normalize_name
 from app.models import User
 from app.schemas import UserCreate, UserOut, Token
 
-router = APIRouter(prefix="/auth", tags=["auth"])
+router = APIRouter(prefix="/auth", tags=["authentication"])
 
 @router.post (
     "/register",
     status_code=status.HTTP_201_CREATED,
     response_model=UserOut,
-    summary="Create new account."
+    summary="CREATE new account."
 )
 
 def register (
@@ -45,7 +45,7 @@ def register (
 @router.post (
     "/login", 
     response_model=Token, 
-    summary="OAuth2 password flow (form fields)"
+    summary="OAuth2 password flow (form fields)."
 )
 
 def login (

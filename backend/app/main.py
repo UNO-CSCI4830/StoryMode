@@ -9,31 +9,32 @@ from app.core.bootstrap import create_root_user
 
 # Import Routers
 try:
+    from app.routers.auth import router as auth
+except Exception:
+    auth = None
+
+from app.routers.users import router as users
+
+try:
     from app.routers.bookclubs import router as bookclubs
 except Exception:
     bookclubs = None
 try:
-    from app.routers.users import router as users
-except Exception:
-    users = None
-try:
-    from app.routers.auth import router as auth
-except Exception:
-    auth = None
-try:
     from app.models import Base
 except Exception:
     Base = None
-try:
-    from app.routers.admin import router as admin
-except Exception:
-    admin = None
+# try:
+#     from app.routers.admin import router as admin
+# except Exception:
+#     admin = None
+
+from app.routers.admin import router as admin
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     db = SessionLocal()
-    create_root_user(db, "root", "root123")
+    create_root_user(db, "root", "root")
     db.close()
     yield
 
@@ -56,12 +57,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-if bookclubs:
-    app.include_router(bookclubs, prefix="/api/v1")
-if users:
-    app.include_router(users, prefix="/api/v1")
 if auth:
     app.include_router(auth, prefix="/api/v1")
+if users:
+    app.include_router(users, prefix="/api/v1")
+if bookclubs:
+    app.include_router(bookclubs, prefix="/api/v1")
 if admin:
     app.include_router(admin, prefix="/api/v1")
 

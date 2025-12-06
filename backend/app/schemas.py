@@ -2,16 +2,34 @@ from pydantic import BaseModel
 from typing import Optional
 
 # Input Model: sent by user
-class BookClubCreate(BaseModel):
+class BookClubCreateIn(BaseModel):
     name: str
     description: Optional[str] = None
 
-# Output Model: returned by API
-class BookClubOut(BaseModel):
+# Output
+class BookClubCreateOut(BaseModel):
     id: str
     name: str
     description: Optional[str] = None
     owner_id: str
+
+class BookClubOutUser(BaseModel):
+    club_name: str
+    description: Optional[str] = None
+    role: Optional[str] = None
+    owner_name: str
+
+class BookClubOutAll(BaseModel):
+    club_name: str
+    description: Optional[str] = None
+    owner_name: str
+
+class BookClubOutAdmin(BaseModel):
+    club_name: str
+    club_id: str
+    owner_name: str
+    owner_id : str
+    description: Optional[str] = None
 
 # Input/Output Validation for Users
 class UserFormat(BaseModel):
