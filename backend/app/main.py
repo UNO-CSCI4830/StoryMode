@@ -12,23 +12,19 @@ try:
     from app.routers.auth import router as auth
 except Exception:
     auth = None
-
 from app.routers.users import router as users
 
-try:
-    from app.routers.bookclubs import router as bookclubs
-except Exception:
-    bookclubs = None
+
+from app.routers.bookclubs import router as bookclubs
+
 try:
     from app.models import Base
 except Exception:
     Base = None
-# try:
-#     from app.routers.admin import router as admin
-# except Exception:
-#     admin = None
-
-from app.routers.admin import router as admin
+try:
+    from app.routers.admin import router as admin
+except Exception:
+    admin = None
 
 
 @asynccontextmanager

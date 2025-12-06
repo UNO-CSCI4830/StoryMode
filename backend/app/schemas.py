@@ -15,12 +15,14 @@ class BookClubCreateOut(BaseModel):
 
 class BookClubOutUser(BaseModel):
     club_name: str
+    club_id: str
     description: Optional[str] = None
     role: Optional[str] = None
     owner_name: str
 
 class BookClubOutAll(BaseModel):
     club_name: str
+    club_id: str
     description: Optional[str] = None
     owner_name: str
 
@@ -30,6 +32,26 @@ class BookClubOutAdmin(BaseModel):
     owner_name: str
     owner_id : str
     description: Optional[str] = None
+
+# Input: When a user nominates a book
+class BookCreate(BaseModel):
+    title: str
+    author: str
+
+# Input: When the owner changes the status (Nominated -> Reading)
+class BookUpdate(BaseModel):
+    status: str  # ex: "reading", "finished", "nominated"
+
+# Output: Displaying the book on the shelf
+class BookOut(BaseModel):
+    id: str
+    title: str
+    author: str
+    status: str
+    club_id: str
+    
+    class Config:
+        from_attributes = True
 
 # Input/Output Validation for Users
 class UserFormat(BaseModel):

@@ -24,6 +24,11 @@ class BookClub(Base):
         back_populates="club", 
         cascade="all, delete-orphan"
     )
+
+    books: Mapped[List["Book"]] = relationship(
+        back_populates="club",
+        cascade="all, delete-orphan" 
+    )
     
 class BookClubMembership(Base):
     __tablename__ = "bookclub_memberships"
@@ -38,6 +43,21 @@ class BookClubMembership(Base):
     # Relationships (so you can do membership.user or membership.club)
     user: Mapped["User"] = relationship(back_populates="memberships")
     club: Mapped["BookClub"] = relationship(back_populates="memberships")
+
+class Book(Base):
+    __tablename__ = "books"
+
+    id: Mapped[str] = mapped_column(String, primary_key=True)
+    title: Mapped[str] = mapped_column(String, nullable=False)
+    author: Mapped[str] = mapped_column(String, nullable=False)
+    
+    # Status: 'nominated', 'reading', 'finished'
+    status: Mapped[str] = mapped_column(String, default="nominated") 
+    
+    club_id: Mapped[str] = mapped_column(ForeignKey("bookclubs.id"), nullable=False)
+
+    # Relationship back to club
+    club: Mapped["BookClub"] = relationship(back_populates="books")
 
 class User(Base):
     __tablename__ = "users"

@@ -3,15 +3,28 @@ from sqlalchemy.orm import Session
 from typing import List
 
 from app.core.db import get_db
-from app.schemas import BookClubCreateIn, BookClubCreateOut, BookClubOutAll, UserFormat
+from app.schemas import (
+    BookClubCreateIn, 
+    BookClubCreateOut, 
+    BookClubOutAll, 
+    UserFormat, 
+    BookCreate, 
+    BookOut, 
+    BookUpdate
+)
+ 
 from app.services.bookclubs import BookClubService
+from app.services.books import BookService
 from app.core.security import require_user
 
 router = APIRouter(prefix="/bookclubs", tags=["bookclubs"])
 
-def get_service(db: Session = Depends(get_db)) -> BookClubService:
+def get_bookclub_service(db: Session = Depends(get_db)) -> BookClubService:
     # Create fresh DB Session
     return BookClubService(db)
+
+def get_book_service(db: Session = Depends(get_db)) -> BookService:
+    return BookService(db)
 
 # Create a bookclub
 @router.post(
@@ -23,7 +36,7 @@ def get_service(db: Session = Depends(get_db)) -> BookClubService:
 def create_bookclub(
     payload: BookClubCreateIn = Body(...),
     current_user: UserFormat = Depends(require_user),
-    svc: BookClubService = Depends(get_service),
+    svc: BookClubService = Depends(get_bookclub_service),
 ):
     owner_id: str = current_user.id
     return svc.create_club(payload, owner_id)
@@ -37,7 +50,7 @@ def create_bookclub(
 def delete_bookclub(
     club_id: str,
     current_user: UserFormat = Depends(require_user),
-    svc: BookClubService = Depends(get_service),
+    svc: BookClubService = Depends(get_bookclub_service),
 ):
     owner_id: str = current_user.id
     return svc.delete_club(club_id, owner_id)
@@ -50,6 +63,44 @@ def delete_bookclub(
 )
 def my_bookclubs(
     current_user: UserFormat = Depends(require_user),
-    svc: BookClubService = Depends(get_service)
+    svc: BookClubService = Depends(get_bookclub_service)
 ):
     return svc.all_clubs()
+
+@router.post(
+    "/{club_id}/join",
+    status_code=status.HTTP_200_OK,
+    summary="JOIN a book club."
+)
+def join_bookclub(
+    club_id: str,
+    current_user: UserFormat = Depends(require_user),
+    svc: BookClubService = Depends(get_bookclub_service),
+):
+    return svc.join_club(user_id=current_user.id, club_id=club_id)
+
+# add a book
+@router.post("/{club_id}/books", response_model=BookOut, summary="Add a book to the shelf")
+def add_book(
+    club_id: str,
+    payload: BookCreate,
+    book_svc: BookService = Depends(get_book_service)
+):
+    return book_svc.add_book(club_id, payload)
+
+# view the shelf
+@router.get("/{club_id}/books", response_model=List[BookOut], summary="View the bookshelf")
+def view_bookshelf(
+    club_id: str,
+    book_svc: BookService = Depends(get_book_service)
+):
+    return book_svc.get_books_by_club(club_id)
+
+# move book status (Start Reading/Finish)
+@router.patch("/books/{book_id}", response_model=BookOut, summary="Update book status")
+def update_book_status(
+    book_id: str,
+    payload: BookUpdate,
+    book_svc: BookService = Depends(get_book_service)
+):
+    return book_svc.update_status(book_id, payload.status)

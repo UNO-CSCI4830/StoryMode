@@ -70,15 +70,15 @@ class BookClubService:
             self.db.commit()
             return {"message": f"Club {club_id} has been deleted."}
 
-    def delete_club(self, club_id: str, owner_id: str):
-        club = self.db.get(BookClub, club_id)
+    def delete_club(self, club_name: str, owner_id: str):
+        club = self.db.get(BookClub, club_name)
         if not club:
             raise HTTPException(status.HTTP_404_NOT_FOUND, "Club Not Found.")
         if club.owner_id != owner_id:
             raise HTTPException(status.HTTP_403_FORBIDDEN, "Forbidden")
         self.db.delete(club)
         self.db.commit()
-        return {"deleted": club_id}
+        return {"deleted": club_name}
 
     def all_clubs(self):
         # Select ALL clubs (no filter applied)
@@ -115,6 +115,7 @@ class BookClubService:
         final_list = []
         for club, owner_username, role in results:
             final_list.append({
+                "club_id": club.id,
                 "club_name": club.name,
                 "description": club.description,
                 "role": role,
@@ -122,3 +123,34 @@ class BookClubService:
             })
             
         return final_list
+
+    def join_club(self, user_id: str, club_id: str):
+            # 1. Does the club exist?
+            club = self.db.get(BookClub, club_id)
+            if not club:
+                raise HTTPException(status.HTTP_404_NOT_FOUND, "Club not found.")
+
+            # 2. Are you already in it? (The Guard)
+            # Query the membership table looking for the specific pair of (user + club)
+            existing_membership = self.db.execute(
+                select(BookClubMembership).where(
+                    BookClubMembership.user_id == user_id,
+                    BookClubMembership.club_id == club_id
+                )
+            ).scalar_one_or_none()
+
+            if existing_membership:
+                # prevents the user from joining twice
+                raise HTTPException(status.HTTP_409_CONFLICT, "You are already a member of this club.")
+
+            # 3. add new member
+            new_membership = BookClubMembership(
+                user_id=user_id,
+                club_id=club_id,
+                role="member"  # <--- default them to 'member', not 'owner'
+            )
+
+            self.db.add(new_membership)
+            self.db.commit()
+            
+            return {"message": "Successfully joined the club", "club_id": club_id}
