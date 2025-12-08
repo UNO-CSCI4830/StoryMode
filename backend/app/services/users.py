@@ -4,31 +4,37 @@ from uuid import uuid4
 from fastapi import HTTPException, status
 
 from app.models import User
-from app.schemas import UserFormat
+from app.core.helpers import normalize_name
+from app.core.security import hash_password
 
 class UserService:
     def __init__(self, db: Session):
         self.db = db
 
-    def create_user(self, payload: UserFormat, user_name: str):
-        exists = self.db.execute (
-            select(User).where (
-                User.user_name == user_name,
-                func.lower(User.user_name) == user_name.lower()
-            )
-        ).first()
+    def create_user(self, user_name: str, password: str, is_admin=False) -> User:
+        user_name = normalize_name(user_name)
+
+        if not user_name:
+            raise ValueError("user_name required")
+
+        # Check if username exists
+        exists = self.db.query(User).filter(User.user_name == user_name).first()
         if exists:
-            raise HTTPException(status.HTTP_409_CONFLICT, "This user already exists.")
-        
-        new_user = User (
+            raise ValueError("Username already in use")
+
+        user = User(
             id=str(uuid4()),
-            user_name = user_name
+            user_name=user_name,
+            password_hash=hash_password(password),
+            is_admin=is_admin,
+            is_active=True
         )
 
-        self.db.add(new_user)
+        self.db.add(user)
         self.db.commit()
-        self.db.refresh(new_user)
-        return new_user
+        self.db.refresh(user)
+
+        return user
     
     def delete_user(self, user_id: str):
         user = self.db.get(User, user_id)

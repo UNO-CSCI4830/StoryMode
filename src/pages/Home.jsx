@@ -9,21 +9,21 @@ import ClubCard from '../components/ClubCard'
 import logo from '../../public/logo.png'
 
 const px = {
-  frame: 'border-8 border-black rounded-3xl shadow-chunky-lg',
+    frame: 'border-8 border-black rounded-3xl shadow-chunky-lg',
 }
 
 const colors = {
-  bg: 'from-amber-200 via-amber-300 to-amber-200',
-  ink: 'text-zinc-900',
+    bg: 'from-amber-200 via-amber-300 to-amber-200',
+    ink: 'text-zinc-900',
 }
 
 export default function Home() {
     const navigate = useNavigate()
     return (
-        <div className={`min-h-screen ${colors.ink}`} style={{fontFamily: '"Press Start 2P, system-ui, ui-sans-serif, sans-serif'}}>
+        <div className={`min-h-screen ${colors.ink}`} style={{ fontFamily: '"Press Start 2P, system-ui, ui-sans-serif, sans-serif' }}>
             {/* Background */}
             <div className={`fixed inset-0 -z-10 bg-gradient-to-b ${colors.bg}`}>
-                <div className="absolute inset-0" style ={{
+                <div className="absolute inset-0" style={{
                     background:
                         'radial-gradient(60% 60% at 50% 20%, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0) 70%), radial-gradient(60% 60% at 100% 100%, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0) 70%)',
                 }} />
@@ -101,7 +101,7 @@ export default function Home() {
                     <Feature icon={MessageSquare} title="Chat & Threads" desc="Keep discussion organized with spoiler‑safe threads and emoji reactions." />
                     <Feature icon={Sparkles} title="Themes" desc="Pick a palette: CRT Green, Neon Nights, or Caramel Console — or make your own." />
                     <Feature icon={Heart} title="Recs & Shelves" desc="Rate books, track favorites, and build shared shelves across your clubs." />
-                    <Feature icon={Search} title="Discovery" desc="Browse trending clubs by genre, city, or vibe. Join in a single click." />   
+                    <Feature icon={Search} title="Discovery" desc="Browse trending clubs by genre, city, or vibe. Join in a single click." />
                 </div>
             </Section>
 
@@ -116,7 +116,7 @@ export default function Home() {
                     <ClubCard name="Tea & Tomes" genre="Cozy" members={92} />
                 </div>
                 <div className="mt-8 text-center">
-                    <PixelButton>See all clubs</PixelButton>
+                    <PixelButton onClick={() => navigate('/clubs')}>See all clubs</PixelButton>
                 </div>
             </Section>
 
@@ -134,7 +134,7 @@ export default function Home() {
                         <a href="#" className="font-bold">Contact</a>
                     </div>
                 </div>
-            </footer>    
+            </footer>
         </div>
     )
 }

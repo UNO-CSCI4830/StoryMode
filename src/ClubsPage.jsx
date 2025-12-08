@@ -1,21 +1,21 @@
 import { useEffect, useState } from 'react'
-import { listClubs, createClub } from './lib/api'
+import { listUserClubs, createClub } from './lib/api'
 import { useUser } from './lib/useUser'
 import PixelButton from './components/PixelButton.jsx'
 import PixelCard from './components/PixelCard.jsx'
 import ClubCard from './components/ClubCard.jsx'
 
-export default function ClubsPage(){
-  const { userId, user, loading: userLoading, error: userError } = useUser()
+export default function ClubsPage() {
+  const { userId, user, token, loading: userLoading, error: userError } = useUser()
   const [clubs, setClubs] = useState([])
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
   const [loading, setLoading] = useState(false)
 
-  async function refresh(uid){
-    if(!uid) return
+  async function refresh(jwt) {
+    if (!jwt) return
     try {
-      const data = await listClubs(uid)
+      const data = await listUserClubs(jwt)
       setClubs(Array.isArray(data) ? data : [])
     } catch (e) {
       console.error(e)
@@ -23,17 +23,19 @@ export default function ClubsPage(){
     }
   }
 
-  useEffect(() => { if (userId) refresh(userId) }, [userId])
+  useEffect(() => {
+    if (token) refresh(token)
+  }, [token])
 
-  async function onCreate(e){
+  async function onCreate(e) {
     e.preventDefault()
-    if(!userId) return
+    if (!token) return
     setLoading(true)
     try {
-      await createClub(userId, { name: name.trim(), description: description.trim() })
+      await createClub(token, { name: name.trim(), description: description.trim() })
       setName('')
       setDescription('')
-      await refresh(userId)
+      await refresh(token)
     } catch (e) {
       console.error(e)
       alert(e.message || 'Failed to create club')
@@ -42,8 +44,9 @@ export default function ClubsPage(){
     }
   }
 
-  if (userLoading) return <div className="text-sm text-zinc-700">Initializing user…</div>
-  if (userError) return <div className="text-sm text-red-700">Failed to init user. Check console.</div>
+  if (userLoading) return <div className="text-sm text-zinc-700">Loading your account…</div>
+  if (userError) return <div className="text-sm text-red-700">Failed to load user. Check console.</div>
+  if (!token) return <div className="text-sm text-zinc-700">Please log in to view and manage book clubs.</div>
 
   return (
     <div className="grid gap-6">
@@ -51,31 +54,49 @@ export default function ClubsPage(){
         <form onSubmit={onCreate} className="grid sm:grid-cols-[1fr,1fr,auto] gap-3 items-end">
           <div>
             <label className="block text-xs font-bold mb-1">Club name</label>
-            <input className="w-full border-4 border-black rounded-xl px-3 py-2"
-              placeholder="e.g., Synthwave Sci-Fi" value={name}
-              onChange={e=>setName(e.target.value)} required />
+            <input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="w-full p-2 border-2 border-black rounded bg-amber-50"
+              placeholder="e.g. Cozy Fantasy Corner"
+            />
           </div>
           <div>
-            <label className="block text-xs font-bold mb-1">Description (optional)</label>
-            <input className="w-full border-4 border-black rounded-xl px-3 py-2"
-              placeholder="What’s this club about?" value={description}
-              onChange={e=>setDescription(e.target.value)} />
+            <label className="block text-xs font-bold mb-1">Description</label>
+            <input
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              className="w-full p-2 border-2 border-black rounded bg-amber-50"
+              placeholder="What are you reading?"
+            />
           </div>
-          <PixelButton type="submit" disabled={loading || !userId} className="h-[42px]">
-            {loading ? 'Creating…' : 'Create club'}
+          <PixelButton type="submit" disabled={loading || !name.trim()}>
+            {loading ? 'Creating…' : 'Create Club'}
           </PixelButton>
         </form>
-        <div className="mt-2 text-xs text-zinc-600">Signed in as <strong>{user?.name}</strong></div>
       </PixelCard>
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {clubs.length === 0 && (
-          <div className="text-sm text-zinc-700">No clubs yet. Create your first one above.</div>
-        )}
-        {clubs.map((c, i) => (
-          <ClubCard key={c.id ?? i} name={c.name} genre={c.description || '—'} members={0} />
-        ))}
-      </div>
+      <PixelCard>
+        <h2 className="font-extrabold mb-3">
+          {user ? `Clubs for ${user.name}` : 'Your clubs'}
+        </h2>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {clubs.map((c, index) => (
+            <ClubCard
+              key={index}
+              name={c.club_name}
+              genre={c.description || 'Book club'}
+              // TODO: fetch real member count
+              members={1}
+            />
+          ))}
+          {clubs.length === 0 && (
+            <div className="text-sm text-zinc-700 col-span-full">
+              No clubs yet. Create one above to get started.
+            </div>
+          )}
+        </div>
+      </PixelCard>
     </div>
   )
 }

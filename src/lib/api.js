@@ -1,50 +1,72 @@
 const BASE_URL = import.meta.env.VITE_API_BASE || 'http://localhost:8000/api/v1'
 
-async function handle(res){
+async function handle(res) {
   const text = await res.text()
-  if (!res.ok) throw new Error(`HTTP ${res.status} ${res.statusText}: ${text}`)
+  if (!res.ok) {
+    throw new Error(`HTTP ${res.status} ${res.statusText}: ${text}`)
+  }
   return text ? JSON.parse(text) : null
 }
 
-export async function createUser(name){
-  // generate a client id if server expects one
-  const id =
-    (crypto && crypto.randomUUID && crypto.randomUUID()) ||
-    `uid_${Date.now()}_${Math.floor(Math.random()*1e6)}`
+// ---------- AUTH ----------
 
-  const url = new URL(`${BASE_URL}/users`)
-  // some backends require the query param too
-  url.searchParams.set('user_name', name)
-
-  const res = await fetch(url.toString(), {
+export async function registerUser(user_name, password) {
+  const res = await fetch(`${BASE_URL}/auth/register`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      id,            // server expects: id
-      user_name: name // server expects: user_name
-    })
+    body: JSON.stringify({ user_name, password })
   })
-  return handle(res) // return whatever the server sends (id/user_name/etc.)
+  return handle(res) // returns created user (UserOut)
 }
 
-export async function listUsers(){
-  const res = await fetch(`${BASE_URL}/users`)
+export async function loginUser(username, password) {
+  const body = new URLSearchParams()
+  body.set('username', username)
+  body.set('password', password)
+
+  const res = await fetch(`${BASE_URL}/auth/login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body
+  })
+  return handle(res) // { access_token, token_type }
+}
+
+export async function getCurrentUser(token) {
+  const res = await fetch(`${BASE_URL}/users/me`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+  return handle(res) // UserFormat
+}
+
+export async function listUserClubs(token) {
+  const res = await fetch(`${BASE_URL}/users/me/bookclubs`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
   return handle(res)
 }
 
-export async function listClubs(userId){
+// ---------- BOOK CLUBS ----------
+
+export async function listClubs(token) {
   const res = await fetch(`${BASE_URL}/bookclubs`, {
-    headers: { 'X-User-Id': userId }
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
   })
   return handle(res)
 }
 
-export async function createClub(userId, payload){
+export async function createClub(token, payload) {
   const res = await fetch(`${BASE_URL}/bookclubs`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'X-User-Id': userId
+      Authorization: `Bearer ${token}`
     },
     body: JSON.stringify({
       name: payload.name,
