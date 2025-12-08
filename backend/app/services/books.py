@@ -3,14 +3,17 @@ from sqlalchemy import select
 from uuid import uuid4
 
 from fastapi import HTTPException, status
-from app.models import Book
+from app.models import Book, BookClub, BookClubMembership, User
 from app.schemas import BookCreate
 
 class BookService:
     def __init__(self, db: Session):
         self.db = db
 
-    def add_book(self, club_id: str, payload: BookCreate):
+    def add_book(self, club_id: str, current_user_id: str, payload: BookCreate):
+        club = self.db.get(BookClub, club_id)
+        if club.owner_id != current_user_id:
+            raise HTTPException(status.HTTP_403_FORBIDDEN, "Forbidden: Only the owner can add books.")
         new_book = Book(
             id=str(uuid4()),
             title=payload.title,
@@ -21,15 +24,32 @@ class BookService:
         self.db.add(new_book)
         self.db.commit()
         return new_book
+    
+    def delete_book(self, book_id: str, current_user_id: str):
+            # fetch the book safely
+            book = self.db.get(Book, book_id)
+            if not book:
+                raise HTTPException(status.HTTP_404_NOT_FOUND, "Book not found")
 
-# 2. VIEW THE SHELF
+            # fetch the club to check ownership
+            club = self.db.get(BookClub, book.club_id)
+            
+            # ownership check
+            if str(club.owner_id) != str(current_user_id):
+                raise HTTPException(status.HTTP_403_FORBIDDEN, "Forbidden: Only the owner can delete books.")
+
+            # delete
+            self.db.delete(book)
+            self.db.commit()
+            
+            return {"deleted": book_id}
+
     def get_books_by_club(self, club_id: str):
         # Fetch all books for this specific club
         return self.db.execute(
             select(Book).where(Book.club_id == club_id)
         ).scalars().all()
 
-    # 3. UPDATE STATUS (Nominated -> Reading)
     def update_status(self, book_id: str, new_status: str):
         book = self.db.get(Book, book_id)
         if not book:

@@ -23,9 +23,6 @@ def get_bookclub_service(db: Session = Depends(get_db)) -> BookClubService:
     # Create fresh DB Session
     return BookClubService(db)
 
-def get_book_service(db: Session = Depends(get_db)) -> BookService:
-    return BookService(db)
-
 # Create a bookclub
 @router.post(
     "",
@@ -78,29 +75,3 @@ def join_bookclub(
     svc: BookClubService = Depends(get_bookclub_service),
 ):
     return svc.join_club(user_id=current_user.id, club_id=club_id)
-
-# add a book
-@router.post("/{club_id}/books", response_model=BookOut, summary="Add a book to the shelf")
-def add_book(
-    club_id: str,
-    payload: BookCreate,
-    book_svc: BookService = Depends(get_book_service)
-):
-    return book_svc.add_book(club_id, payload)
-
-# view the shelf
-@router.get("/{club_id}/books", response_model=List[BookOut], summary="View the bookshelf")
-def view_bookshelf(
-    club_id: str,
-    book_svc: BookService = Depends(get_book_service)
-):
-    return book_svc.get_books_by_club(club_id)
-
-# move book status (Start Reading/Finish)
-@router.patch("/books/{book_id}", response_model=BookOut, summary="Update book status")
-def update_book_status(
-    book_id: str,
-    payload: BookUpdate,
-    book_svc: BookService = Depends(get_book_service)
-):
-    return book_svc.update_status(book_id, payload.status)

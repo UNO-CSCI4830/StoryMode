@@ -13,10 +13,14 @@ try:
 except Exception:
     auth = None
 from app.routers.users import router as users
-
-
-from app.routers.bookclubs import router as bookclubs
-
+try:
+    from app.routers.bookclubs import router as bookclubs
+except Exception:
+    bookclubs = None
+try:
+    from app.routers.books import router as books
+except Exception:
+    books = None
 try:
     from app.models import Base
 except Exception:
@@ -59,6 +63,8 @@ if users:
     app.include_router(users, prefix="/api/v1")
 if bookclubs:
     app.include_router(bookclubs, prefix="/api/v1")
+if books:
+    app.include_router(books, prefix="/api/v1")
 if admin:
     app.include_router(admin, prefix="/api/v1")
 
