@@ -1,50 +1,45 @@
-from fastapi import APIRouter, Depends, Header, Body, status
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
 
+from app.core.security import require_user
+
 from app.core.db import get_db
-from app.schemas import UserFormat
-from app.services.users import UserService
+from app.models import User
+from app.schemas import UserOut, UserFormat, BookClubOutUser
+from app.services.bookclubs import BookClubService
 
 router = APIRouter(prefix="/users", tags=["users"])
 
-def get_service(db: Session = Depends(get_db)) -> UserService:
+# Establish a connection to BookClubService
+def get_bookclub_service(db: Session = Depends(get_db)) -> BookClubService:
     # Create fresh DB Session
-    return UserService(db)
+    return BookClubService(db)
 
-# Create a user
-@router.post (
-    "", 
-    response_model = UserFormat,
-    status_code = status.HTTP_201_CREATED,
-    summary = "Create a new user."
-)
-def create_user (
-    user_name: str,
-    payload: UserFormat = Body(...),
-    svc: UserService = Depends(get_service)
-):
-    return svc.create_user(payload, user_name)
+@router.get(
+    "/me", 
+    response_model=UserOut, 
+    summary="GET Current user profile.")
 
-# Delete a user
-@router.delete (
-    "/{user_id}",
-    status_code=status.HTTP_200_OK,
-    summary="Delete a user."
-)
-def delete_user (
-    user_id: str,
-    svc: UserService = Depends(get_service)
-):
-    return svc.delete_user(user_id)
+def me(
+    current_user: User = Depends(require_user),
+    db: Session = Depends(get_db),
+) -> UserOut:
 
-# List all users
-@router.get (
-    "",
-    response_model=List[UserFormat],
-    summary="List all users."
+    return UserOut(
+        id=current_user.id,
+        user_name=current_user.user_name
+    )
+
+# List all bookclubs you are in
+@router.get(
+    "/me/bookclubs",
+    response_model=List[BookClubOutUser],
+    summary="GET all book clubs you are in.",
 )
-def list_users (
-    svc: UserService = Depends(get_service)
+def my_bookclubs(
+    current_user: UserFormat = Depends(require_user),
+    svc: BookClubService = Depends(get_bookclub_service)
 ):
-    return svc.list_users()
+    owner_id: str = current_user.id
+    return svc.my_clubs(owner_id)

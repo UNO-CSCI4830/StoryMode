@@ -4,3 +4,7 @@ sqlalchemy
 pydantic
 python-dotenv
 pytest
+passlib[argon2]
+python-jose[cryptography]
+python-multipart
+
