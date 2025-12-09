@@ -58,16 +58,14 @@ def view_bookshelf(
 ):
     return book_svc.get_books_by_club(club_id)
 
-# move book status (Start Reading/Finish)
-@router.patch(""
-    "/{club_id}/{book_id}", 
+@router.patch(
+    "/{club_id}/books/{book_id}",  # Fixed the URL string
     response_model=BookOut, 
-    summary="UPDATE book status."
+    summary="Toggle book status (Reading OR Finished)"
 )
 def update_book_status(
     book_id: str,
-    payload: BookUpdate,
     current_user: UserFormat = Depends(require_user),
     book_svc: BookService = Depends(get_book_service)
 ):
-    return book_svc.update_status(book_id, payload.status)
+    return book_svc.update_status(book_id, current_user.id)

@@ -33,14 +33,12 @@ class BookClubOutAdmin(BaseModel):
     owner_id : str
     description: Optional[str] = None
 
-# Input: When a user nominates a book
 class BookCreate(BaseModel):
     title: str
     author: str
 
-# Input: When the owner changes the status (Nominated -> Reading)
 class BookUpdate(BaseModel):
-    status: str  # ex: "reading", "finished", "nominated"
+    status: str  # ex: "reading", "finished"
 
 # Output: Displaying the book on the shelf
 class BookOut(BaseModel):
@@ -52,6 +50,14 @@ class BookOut(BaseModel):
     
     class Config:
         from_attributes = True
+
+class BookClubDetailOut(BaseModel):
+    id: str
+    name: str
+    description: Optional[str] = None
+    owner_id: str
+    owner_name: str
+    member_count: int 
 
 # Input/Output Validation for Users
 class UserFormat(BaseModel):

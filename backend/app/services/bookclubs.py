@@ -150,3 +150,55 @@ class BookClubService:
             self.db.commit()
             
             return {"message": "Successfully joined the club", "club_id": club_id}
+    
+    def leave_club(self, user_id: str, club_id: str):
+        membership = self.db.execute(
+            select(BookClubMembership).where(
+                BookClubMembership.user_id == user_id,
+                BookClubMembership.club_id == club_id
+            )
+        ).scalar_one_or_none()
+
+        # validation
+        if not membership:
+            raise HTTPException(status.HTTP_404_NOT_FOUND, "You are not a member of this club.")
+
+        # owner cannot leave
+        if membership.role == "owner":
+            raise HTTPException(
+                status.HTTP_400_BAD_REQUEST, 
+                "Owners cannot leave their own club. You must delete the club instead."
+            )
+
+        # delete membership
+        self.db.delete(membership)
+        self.db.commit()
+        
+        return {"message": "Successfully left the club", "club_id": club_id}
+    
+    def get_club_details(self, club_id: str):
+        query = (
+            select(BookClub, User.user_name)
+            .join(User, BookClub.owner_id == User.id)
+            .where(BookClub.id == club_id)
+        )
+        result = self.db.execute(query).first()
+
+        if not result:
+            raise HTTPException(status.HTTP_404_NOT_FOUND, "Club not found")
+
+        club, owner_name = result
+
+        # calculate Member Count
+        member_count = self.db.query(BookClubMembership).filter(
+            BookClubMembership.club_id == club_id
+        ).count()
+
+        return {
+            "id": club.id,
+            "name": club.name,
+            "description": club.description,
+            "owner_id": club.owner_id,
+            "owner_name": owner_name,
+            "member_count": member_count
+        }

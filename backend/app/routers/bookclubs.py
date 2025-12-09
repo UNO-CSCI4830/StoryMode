@@ -7,10 +7,8 @@ from app.schemas import (
     BookClubCreateIn, 
     BookClubCreateOut, 
     BookClubOutAll, 
+    BookClubDetailOut,
     UserFormat, 
-    BookCreate, 
-    BookOut, 
-    BookUpdate
 )
  
 from app.services.bookclubs import BookClubService
@@ -75,3 +73,26 @@ def join_bookclub(
     svc: BookClubService = Depends(get_bookclub_service),
 ):
     return svc.join_club(user_id=current_user.id, club_id=club_id)
+
+@router.post(
+    "/{club_id}/leave",
+    status_code=status.HTTP_200_OK,
+    summary="LEAVE a book club."
+)
+def leave_bookclub(
+    club_id: str,
+    current_user: UserFormat = Depends(require_user),
+    svc: BookClubService = Depends(get_bookclub_service),
+):
+    return svc.leave_club(user_id=current_user.id, club_id=club_id)
+
+@router.get(
+    "/{club_id}", 
+    response_model=BookClubDetailOut, 
+    summary="Get club details and member count."
+)
+def get_club_details(
+    club_id: str,
+    svc: BookClubService = Depends(get_bookclub_service)
+):
+    return svc.get_club_details(club_id)
