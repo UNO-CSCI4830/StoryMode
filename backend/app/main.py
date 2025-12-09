@@ -12,23 +12,33 @@ try:
     from app.routers.auth import router as auth
 except Exception:
     auth = None
+
 from app.routers.users import router as users
+
 try:
     from app.routers.bookclubs import router as bookclubs
 except Exception:
     bookclubs = None
+
 try:
     from app.routers.books import router as books
 except Exception:
     books = None
+
 try:
     from app.models import Base
 except Exception:
     Base = None
+
 try:
     from app.routers.admin import router as admin
 except Exception:
     admin = None
+
+try:
+    from app.routers.messages import router as messages
+except Exception:
+    messages = None
 
 
 @asynccontextmanager
@@ -37,6 +47,7 @@ async def lifespan(app: FastAPI):
     create_root_user(db, "root", "root")
     db.close()
     yield
+
 
 app = FastAPI(
     title="StoryMode API",
@@ -67,6 +78,9 @@ if books:
     app.include_router(books, prefix="/api/v1")
 if admin:
     app.include_router(admin, prefix="/api/v1")
+if messages:
+    app.include_router(messages, prefix="/api/v1")
+
 
 @app.get("/ping")
 def ping():

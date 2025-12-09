@@ -73,3 +73,16 @@ class User(Base):
         back_populates="user", 
         cascade="all, delete-orphan"
     )
+
+class Message(Base):
+    __tablename__ = "messages"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    club_id: Mapped[str] = mapped_column(ForeignKey("bookclubs.id"), nullable=False)
+    user_name: Mapped[str] = mapped_column(String(80), nullable=False)
+    content: Mapped[str] = mapped_column(Text, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+        nullable=False,
+    )

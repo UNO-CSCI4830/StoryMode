@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from datetime import datetime
 from typing import Optional
 
 # Input Model: sent by user
@@ -76,3 +77,15 @@ class UserOut(BaseModel):
 class Token(BaseModel):
     access_token: str
     token_type: str = "bearer"
+
+class MessageBase(BaseModel):
+    content: str
+
+class MessageCreate(MessageBase):
+    pass
+
+class MessageOut(MessageBase):
+    id: int
+    club_id: str
+    user_name: str
+    created_at: datetime

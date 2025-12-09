@@ -1,8 +1,9 @@
+import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 # Create SQLite DB file in backend/ folder
-SQLALCHEMY_DB_URL = "sqlite:///./temp.db"
+SQLALCHEMY_DB_URL = os.environ.get("DATABASE_URL", "sqlite:///./temp.db")
 
 # echo=True will prints SQL to the console, set to False if it gets annoying
 engine = create_engine (
