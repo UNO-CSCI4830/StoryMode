@@ -84,4 +84,9 @@ Once Docker is installed you can run StoryMode using the command below.
 docker compose up --build
 ```
 
+#### To clear data:
+```bash
+docker compose down -v
+```
+
 The link to the website will appear inside the terminal: http://localhost:5173/
