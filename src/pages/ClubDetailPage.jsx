@@ -9,6 +9,8 @@ import {
     addMessageToClub,
     toggleBookStatus,
     updateClub,
+    deleteClub,
+    leaveClub,
 } from '../lib/api'
 import PixelButton from '../components/PixelButton.jsx'
 import PixelCard from '../components/PixelCard.jsx'
@@ -90,7 +92,7 @@ export default function ClubDetailPage() {
                 setMessages(uiMessages)
             } catch (e) {
                 if (cancelled || e.status === 404) return
-                
+
                 console.error('Failed to load messages', e)
             }
         }
@@ -155,6 +157,45 @@ export default function ClubDetailPage() {
         } catch (e) {
             console.error('Failed to update club', e)
             alert(e.message || 'Failed to update club')
+        }
+    }
+
+    async function handleDeleteClub() {
+        if (!token || !clubId) return
+
+        const confirmed = window.confirm(
+            'Are you sure you want to delete this club? This cannot be undone.'
+        )
+        if (!confirmed) return
+
+        try {
+            await deleteClub(token, clubId)
+            navigate('/clubs')
+        } catch (e) {
+            console.error('Failed to delete club', e)
+            alert(e.message || 'Failed to delete club')
+        }
+    }
+
+    async function handleLeaveClub() {
+        if (!token || !clubId) return
+
+        if (isOwner) {
+            window.alert(
+                'Owners cannot leave their own club. You must delete the club instead.'
+            )
+            return
+        }
+
+        const confirmed = window.confirm('Are you sure you want to leave this club?')
+        if (!confirmed) return
+
+        try {
+            await leaveClub(token, clubId)
+            navigate('/clubs')
+        } catch (e) {
+            console.error('Failed to leave club', e)
+            alert(e.message || 'Failed to leave club')
         }
     }
 
@@ -267,6 +308,8 @@ export default function ClubDetailPage() {
                         canEdit={!!isOwner}
                         onToggleBookStatus={handleToggleBookStatus}
                         onEditClub={isOwner ? handleEditClub : undefined}
+                        onDeleteClub={isOwner ? handleDeleteClub : undefined}
+                        onLeaveClub={handleLeaveClub}
                     />
                 )}
             </div>

@@ -86,6 +86,26 @@ export async function joinClub(token, clubId) {
 	return handle(res)
 }
 
+export async function leaveClub(token, clubId) {
+	const res = await fetch(`${BASE_URL}/bookclubs/${clubId}/leave`, {
+		method: 'POST',
+		headers: {
+			Authorization: `Bearer ${token}`
+		}
+	})
+	return handle(res)
+}
+
+export async function deleteClub(token, clubId) {
+	const res = await fetch(`${BASE_URL}/bookclubs/${clubId}`, {
+		method: 'DELETE',
+		headers: {
+			Authorization: `Bearer ${token}`
+		}
+	})
+	return handle(res)
+}
+
 // ---------- CLUB DETAIL + BOOKS ----------
 
 // basic club metadata + member_count

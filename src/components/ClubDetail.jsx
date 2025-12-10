@@ -10,6 +10,8 @@ export default function ClubDetail({
   canEdit,
   onToggleBookStatus,
   onEditClub,
+  onDeleteClub,
+  onLeaveClub,
 }) {
   if (!club) {
     return (
@@ -38,10 +40,19 @@ export default function ClubDetail({
           </p>
 
           {canEdit && (
-            <div className="flex justify-end pt-1">
+            <div className="flex flex-wrap justify-end gap-2 pt-1">
               <PixelButton type="button" onClick={onEditClub}>
                 Edit club
               </PixelButton>
+              {onDeleteClub && (
+                <PixelButton
+                  type="button"
+                  className="bg-red-400 hover:bg-red-500 text-red-900"
+                  onClick={onDeleteClub}
+                >
+                  Delete club
+                </PixelButton>
+              )}
             </div>
           )}
         </PixelCard>
@@ -59,6 +70,7 @@ export default function ClubDetail({
       <ChatPanel
         messages={club.messages || []}
         onAddMessage={onAddMessage}
+        onLeaveClub={onLeaveClub}
       />
     </div>
   )

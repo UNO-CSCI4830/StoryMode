@@ -4,7 +4,7 @@ import PixelCard from './PixelCard.jsx'
 import PixelButton from './PixelButton.jsx'
 import { MessageSquare } from 'lucide-react'
 
-export default function ChatPanel({ messages, onAddMessage }) {
+export default function ChatPanel({ messages, onAddMessage, onLeaveClub }) {
   const [input, setInput] = useState('')
   const listRef = useRef(null)
 
@@ -41,9 +41,8 @@ export default function ChatPanel({ messages, onAddMessage }) {
           {messages.map((m) => (
             <div
               key={m.id}
-              className={`px-3 py-2 rounded-xl border-2 border-black bg-white ${
-                m.user === 'You' ? 'self-end' : 'self-start'
-              }`}
+              className={`px-3 py-2 rounded-xl border-2 border-black bg-white ${m.user === 'You' ? 'self-end' : 'self-start'
+                }`}
             >
               <div className="flex items-center justify-between gap-3 mb-1">
                 <span className="font-bold">{m.user}</span>
@@ -64,8 +63,17 @@ export default function ChatPanel({ messages, onAddMessage }) {
           value={input}
           onChange={(e) => setInput(e.target.value)}
         />
-        <div className="flex justify-end">
+        <div className="flex flex-col items-end gap-2">
           <PixelButton type="submit">Send</PixelButton>
+          {onLeaveClub && (
+            <PixelButton
+              type="button"
+              className="bg-red-400 hover:bg-red-500 text-red-900"
+              onClick={onLeaveClub}
+            >
+              Leave club
+            </PixelButton>
+          )}
         </div>
       </form>
     </PixelCard>
