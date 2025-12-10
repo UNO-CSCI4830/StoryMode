@@ -76,6 +76,16 @@ export async function createClub(token, payload) {
 	return handle(res)
 }
 
+export async function joinClub(token, clubId) {
+	const res = await fetch(`${BASE_URL}/bookclubs/${clubId}/join`, {
+		method: 'POST',
+		headers: {
+			Authorization: `Bearer ${token}`
+		}
+	})
+	return handle(res)
+}
+
 // ---------- CLUB DETAIL + BOOKS ----------
 
 // basic club metadata + member_count
@@ -110,23 +120,50 @@ export async function addBookToClub(token, clubId, payload) {
 	return handle(res) // BookOut
 }
 
+// toggle a book between "reading" and "finished" (owner only)
+export async function toggleBookStatus(token, clubId, bookId) {
+	const res = await fetch(`${BASE_URL}/books/${clubId}/books/${bookId}`, {
+		method: 'PATCH',
+		headers: {
+			Authorization: `Bearer ${token}`,
+		},
+	})
+	return handle(res)
+}
+
+// update a club's name / description (owner only)
+export async function updateClub(token, clubId, payload) {
+	const res = await fetch(`${BASE_URL}/bookclubs/${clubId}`, {
+		method: 'PATCH',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${token}`
+		},
+		body: JSON.stringify({
+			name: payload.name,
+			description: payload.description
+		})
+	})
+	return handle(res) // BookClubDetailOut
+}
+
 // ---------- CLUB MESSAGES (CHAT) ----------
 
 export async function listMessagesForClub(clubId) {
-  const res = await fetch(`${BASE_URL}/bookclubs/${clubId}/messages`)
-  return handle(res)
+	const res = await fetch(`${BASE_URL}/bookclubs/${clubId}/messages`)
+	return handle(res)
 }
 
 export async function addMessageToClub(token, clubId, payload) {
-  const res = await fetch(`${BASE_URL}/bookclubs/${clubId}/messages`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`
-    },
-    body: JSON.stringify({
-      content: payload.content
-    })
-  })
-  return handle(res)
+	const res = await fetch(`${BASE_URL}/bookclubs/${clubId}/messages`, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${token}`
+		},
+		body: JSON.stringify({
+			content: payload.content
+		})
+	})
+	return handle(res)
 }

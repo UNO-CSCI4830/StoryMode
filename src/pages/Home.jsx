@@ -5,7 +5,6 @@ import PixelButton from '../components/PixelButton'
 import PixelCard from '../components/PixelCard'
 import Section from '../components/Section'
 import NavLink from '../components/NavLink'
-import ClubCard from '../components/ClubCard'
 import logo from '../../public/logo.png'
 
 const px = {
@@ -56,7 +55,14 @@ export default function Home() {
                     </button>
                     <nav className="hidden sm:flex items-center gap-6">
                         <NavLink href="#features">Features</NavLink>
-                        <NavLink href="#clubs">Clubs</NavLink>
+                        <button
+                            type="button"
+                            className="font-bold tracking-wide hover:opacity-80"
+                            onClick={() => navigate('/explore')}
+                        >
+                            Clubs
+                        </button>
+
 
                         {/* While loading, just show nothing extra */}
                         {loading ? null : token ? (
@@ -116,7 +122,7 @@ export default function Home() {
                                 <Sparkles className="w-5 h-5" />
                                 Create a Club
                             </PixelButton>
-                            <PixelButton className="bg-amber-300" onClick={() => navigate('/clubs')}>
+                            <PixelButton className="bg-amber-300" onClick={() => navigate('/explore')}>
                                 <Search className="w-5 h-5" />
                                 Explore Clubs
                             </PixelButton>
@@ -171,21 +177,6 @@ export default function Home() {
                         title="Discovery"
                         desc="Browse trending clubs by genre, city, or vibe. Join in a single click."
                     />
-                </div>
-            </Section>
-
-            {/* Sample clubs */}
-            <Section id="clubs" title="Trending clubs">
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <ClubCard name="Neo-Noir Nights" genre="Mystery / Thriller" members={128} />
-                    <ClubCard name="Byte-Size Classics" genre="Literary" members={86} />
-                    <ClubCard name="Dungeon Readers" genre="Fantasy / RPG tie-ins" members={203} />
-                    <ClubCard name="Synthwave Sci-Fi" genre="Science Fiction" members={164} />
-                    <ClubCard name="Page & Pixel" genre="Indie / Zines" members={57} />
-                    <ClubCard name="Tea & Tomes" genre="Cozy" members={92} />
-                </div>
-                <div className="mt-8 text-center">
-                    <PixelButton onClick={() => navigate('/clubs')}>See all clubs</PixelButton>
                 </div>
             </Section>
 

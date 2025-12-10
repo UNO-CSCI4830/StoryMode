@@ -6,7 +6,9 @@ import {
     listBooksForClub,
     addBookToClub,
     listMessagesForClub,
-    addMessageToClub
+    addMessageToClub,
+    toggleBookStatus,
+    updateClub,
 } from '../lib/api'
 import PixelButton from '../components/PixelButton.jsx'
 import PixelCard from '../components/PixelCard.jsx'
@@ -114,6 +116,46 @@ export default function ClubDetailPage() {
         }
     }
 
+    async function handleToggleBookStatus(bookId) {
+        if (!token || !clubId) return
+        try {
+            const updated = await toggleBookStatus(token, clubId, bookId)
+            setBooks(prev => prev.map(b => (b.id === updated.id ? updated : b)))
+        } catch (e) {
+            console.error('Failed to update book status', e)
+            alert(e.message || 'Failed to update book status')
+        }
+    }
+
+    async function handleEditClub() {
+        if (!token || !clubMeta) return
+
+        const currentName = clubMeta.name || ''
+        const currentDesc = clubMeta.description || ''
+
+        const newName = window.prompt('Edit club name:', currentName)
+        if (newName === null) return // cancelled
+        const trimmedName = newName.trim()
+        if (!trimmedName) {
+            alert('Name cannot be empty.')
+            return
+        }
+
+        const newDesc = window.prompt('Edit club description:', currentDesc)
+        if (newDesc === null) return
+
+        try {
+            const updated = await updateClub(token, clubMeta.id, {
+                name: trimmedName,
+                description: newDesc,
+            })
+            setClubMeta(updated)
+        } catch (e) {
+            console.error('Failed to update club', e)
+            alert(e.message || 'Failed to update club')
+        }
+    }
+
     async function handleAddMessage(text) {
         if (!token || !clubId) return
         const trimmed = text.trim()
@@ -164,6 +206,7 @@ export default function ClubDetailPage() {
         )
     }
 
+    const isOwner = user && clubMeta && clubMeta.owner_id === user.id
     const displayName = user ? (user.user_name || user.name || 'You') : 'You'
 
     // Shape data for ClubDetail component (expects books + messages arrays)
@@ -219,6 +262,9 @@ export default function ClubDetailPage() {
                         club={uiClub}
                         onAddBook={handleAddBook}
                         onAddMessage={handleAddMessage}
+                        canEdit={!!isOwner}
+                        onToggleBookStatus={handleToggleBookStatus}
+                        onEditClub={isOwner ? handleEditClub : undefined}
                     />
                 )}
             </div>

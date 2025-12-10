@@ -7,6 +7,10 @@ class BookClubCreateIn(BaseModel):
     name: str
     description: Optional[str] = None
 
+class BookClubUpdateIn(BaseModel):
+    name: Optional[str] = None
+    description: Optional[str] = None
+
 # Output
 class BookClubCreateOut(BaseModel):
     id: str

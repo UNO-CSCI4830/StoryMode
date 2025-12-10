@@ -15,7 +15,7 @@ class BookService:
 
         # check ownership
         if str(club.owner_id) != str(current_user_id):
-            raise HTTPException(status.HTTP_403_FORBIDDEN, "Forbidden: Only the owner can delete books.")
+            raise HTTPException(status.HTTP_403_FORBIDDEN, "Forbidden: Only the owner can add books.")
         
         new_book = Book(
             id=str(uuid4()),

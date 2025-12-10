@@ -4,7 +4,7 @@ from uuid import uuid4
 from fastapi import HTTPException, status
 
 from app.models import BookClub, BookClubMembership, User
-from app.schemas import BookClubCreateIn
+from app.schemas import BookClubCreateIn, BookClubUpdateIn
 
 class BookClubService:
     def __init__(self, db: Session):
@@ -52,6 +52,32 @@ class BookClubService:
             self.db.refresh(new_club)
             
             return new_club
+
+    def update_club(self, club_id: str, owner_id: str, payload: BookClubUpdateIn):
+        club = self.db.get(BookClub, club_id)
+        if not club:
+            raise HTTPException(status.HTTP_404_NOT_FOUND, "Club not found")
+
+        if str(club.owner_id) != str(owner_id):
+            raise HTTPException(
+                status.HTTP_403_FORBIDDEN,
+                "Forbidden: Only the owner can update this club."
+            )
+
+        if payload.name is not None:
+            name = payload.name.strip()
+            if not name:
+                raise HTTPException(status.HTTP_400_BAD_REQUEST, "Name cannot be empty.")
+            club.name = name
+
+        if payload.description is not None:
+            club.description = payload.description.strip()
+
+        self.db.add(club)
+        self.db.commit()
+
+        # reuse existing helper to shape output
+        return self.get_club_details(club_id)
 
     def admin_delete_club(self, club_id: str):
             """

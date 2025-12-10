@@ -8,7 +8,8 @@ from app.schemas import (
     BookClubCreateOut, 
     BookClubOutAll, 
     BookClubDetailOut,
-    UserFormat, 
+    UserFormat,
+    BookClubUpdateIn,
 )
  
 from app.services.bookclubs import BookClubService
@@ -96,3 +97,17 @@ def get_club_details(
     svc: BookClubService = Depends(get_bookclub_service)
 ):
     return svc.get_club_details(club_id)
+
+@router.patch(
+    "/{club_id}",
+    response_model=BookClubDetailOut,
+    summary="UPDATE a book club you own."
+)
+def update_bookclub(
+    club_id: str,
+    payload: BookClubUpdateIn = Body(...),
+    current_user: UserFormat = Depends(require_user),
+    svc: BookClubService = Depends(get_bookclub_service),
+):
+    owner_id: str = current_user.id
+    return svc.update_club(club_id, owner_id, payload)
