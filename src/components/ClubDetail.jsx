@@ -9,6 +9,7 @@ export default function ClubDetail({
   onAddMessage,
   canEdit,
   onToggleBookStatus,
+  onDeleteBook,
   onEditClub,
   onDeleteClub,
   onLeaveClub,
@@ -62,6 +63,7 @@ export default function ClubDetail({
           books={club.books || []}
           onAddBook={onAddBook}
           onToggleBookStatus={onToggleBookStatus}
+          onDeleteBook={onDeleteBook}
           canEdit={canEdit}
         />
       </div>

@@ -151,6 +151,17 @@ export async function toggleBookStatus(token, clubId, bookId) {
 	return handle(res)
 }
 
+// delete a book from a club (owner only)
+export async function deleteBookFromClub(token, clubId, bookId) {
+	const res = await fetch(`${BASE_URL}/books/${clubId}/${bookId}`, {
+		method: 'DELETE',
+		headers: {
+			Authorization: `Bearer ${token}`,
+		},
+	})
+	return handle(res)
+}
+
 // update a club's name / description (owner only)
 export async function updateClub(token, clubId, payload) {
 	const res = await fetch(`${BASE_URL}/bookclubs/${clubId}`, {

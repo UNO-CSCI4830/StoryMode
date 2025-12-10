@@ -11,6 +11,7 @@ import {
     updateClub,
     deleteClub,
     leaveClub,
+    deleteBookFromClub
 } from '../lib/api'
 import PixelButton from '../components/PixelButton.jsx'
 import PixelCard from '../components/PixelCard.jsx'
@@ -128,6 +129,23 @@ export default function ClubDetailPage() {
         } catch (e) {
             console.error('Failed to update book status', e)
             alert(e.message || 'Failed to update book status')
+        }
+    }
+
+        async function handleDeleteBook(bookId) {
+        if (!token || !clubId) return
+
+        const confirmed = window.confirm(
+            'Are you sure you want to remove this book from the club reading list?'
+        )
+        if (!confirmed) return
+
+        try {
+            await deleteBookFromClub(token, clubId, bookId)
+            setBooks(prev => prev.filter(b => b.id !== bookId))
+        } catch (e) {
+            console.error('Failed to delete book', e)
+            alert(e.message || 'Failed to remove book')
         }
     }
 
@@ -307,6 +325,7 @@ export default function ClubDetailPage() {
                         onAddMessage={handleAddMessage}
                         canEdit={!!isOwner}
                         onToggleBookStatus={handleToggleBookStatus}
+                        onDeleteBook={isOwner ? handleDeleteBook : undefined}
                         onEditClub={isOwner ? handleEditClub : undefined}
                         onDeleteClub={isOwner ? handleDeleteClub : undefined}
                         onLeaveClub={handleLeaveClub}

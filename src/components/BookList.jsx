@@ -1,5 +1,4 @@
-// src/components/BookList.jsx
-import React, { useState } from 'react'
+import { useState } from 'react'
 import PixelCard from './PixelCard.jsx'
 import PixelButton from './PixelButton.jsx'
 import { Book } from 'lucide-react'
@@ -8,6 +7,7 @@ export default function BookList({
 	books,
 	onAddBook,
 	onToggleBookStatus,
+	onDeleteBook,
 	canEdit,
 }) {
 	const [title, setTitle] = useState('')
@@ -49,21 +49,32 @@ export default function BookList({
 
 						<div className="flex items-center gap-2 text-[10px] sm:text-xs uppercase tracking-wide">
 							{canEdit && (
-								<button
-									type="button"
-									onClick={() => onToggleBookStatus && onToggleBookStatus(b.id)}
-									className="w-4 h-4 border-2 border-black rounded-[4px] grid place-items-center bg-amber-100 hover:bg-emerald-200"
-									aria-label={
-										(b.status || 'queued') === 'reading'
-											? 'Mark as finished'
-											: 'Mark as reading'
-									}
-								>
-									{/* Simple visual: filled square when finished */}
-									{(b.status || 'queued') === 'finished' && (
-										<span className="block w-2 h-2 bg-black" />
+								<>
+									<button
+										type="button"
+										onClick={() => onToggleBookStatus && onToggleBookStatus(b.id)}
+										className="w-4 h-4 border-2 border-black rounded-[4px] grid place-items-center bg-amber-100 hover:bg-emerald-200"
+										aria-label={
+											(b.status || 'queued') === 'reading'
+												? 'Mark as finished'
+												: 'Mark as reading'
+										}
+									>
+										{(b.status || 'queued') === 'finished' && (
+											<span className="block w-2 h-2 bg-black" />
+										)}
+									</button>
+
+									{onDeleteBook && (
+										<button
+											type="button"
+											onClick={() => onDeleteBook(b.id)}
+											className="px-2 py-1 rounded-[6px] border-2 border-black bg-red-400 hover:bg-red-500 text-red-900 font-bold tracking-wide"
+										>
+											Remove
+										</button>
 									)}
-								</button>
+								</>
 							)}
 							<span>{(b.status || 'queued').toUpperCase()}</span>
 						</div>
