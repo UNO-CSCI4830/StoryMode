@@ -4,7 +4,7 @@ import { Users } from 'lucide-react'
 import PixelButton from '../components/PixelButton'
 import PixelCard from '../components/PixelCard'
 import NavLink from '../components/NavLink'
-import logo from '../../public/logo.png'
+import logo from '../../assets/logo.png'
 import { loginUser, getCurrentUser } from '../lib/api'
 
 const colors = {

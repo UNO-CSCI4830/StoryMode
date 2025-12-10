@@ -89,7 +89,9 @@ export default function ClubDetailPage() {
 
                 setMessages(uiMessages)
             } catch (e) {
-                if (!cancelled) console.error('Failed to load messages', e)
+                if (cancelled || e.status === 404) return
+                
+                console.error('Failed to load messages', e)
             }
         }
 

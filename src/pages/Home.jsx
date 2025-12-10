@@ -5,7 +5,7 @@ import PixelButton from '../components/PixelButton'
 import PixelCard from '../components/PixelCard'
 import Section from '../components/Section'
 import NavLink from '../components/NavLink'
-import logo from '../../public/logo.png'
+import logo from '../../assets/logo.png'
 
 const px = {
     frame: 'border-8 border-black rounded-3xl shadow-chunky-lg',
