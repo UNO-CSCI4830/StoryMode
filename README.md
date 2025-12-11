@@ -30,9 +30,9 @@ Users can register, browse existing clubs, and create new ones — all managed t
 ## Technologies Used
 - **Frontend:** React + Vite + JavaScript  
 - **Backend:** Python 3.10+ + FastAPI + Uvicorn  
-- **Environment:** GitHub Codespaces (recommended) / VS Code  
-- **Database:** (if used) SQLite or PostgreSQL  
-- **Other Tools:** Docker, Node.js, npm  
+- **Environment:** Docker / GitHub Codespaces
+- **Database:** (if used) SQLite 
+- **Other Tools:** Node.js, npm  
 
 ---
 
@@ -47,24 +47,56 @@ Users can register, browse existing clubs, and create new ones — all managed t
 
 ## API Endpoints
 
-### **Book Clubs**
+### **Authentication**
 | Method | Endpoint | Description |
 |--------|-----------|-------------|
-| `POST` | `/api/v1/bookclubs` | Create a new book club |
-| `GET` | `/api/v1/bookclubs` | List all book clubs |
-| `DELETE` | `/api/v1/bookclubs/{club_id}` | Delete a book club you own |
+| `POST` | `/api/v1/auth/register` | Create a new account |
+| `POST` | `/api/v1/auth/login` | OAuth2 password flow (Login) |
 
 ### **Users**
 | Method | Endpoint | Description |
 |--------|-----------|-------------|
-| `POST` | `/api/v1/users` | Create a new user |
-| `GET` | `/api/v1/users` | List all users |
-| `DELETE` | `/api/v1/users/{user_id}` | Delete a user |
+| `GET` | `/api/v1/users/me` | Get current user profile |
+| `GET` | `/api/v1/users/me/bookclubs` | Get all book clubs you are a member of |
+
+### **Book Clubs**
+| Method | Endpoint | Description |
+|--------|-----------|-------------|
+| `GET` | `/api/v1/bookclubs` | List all book clubs (Public Directory) |
+| `POST` | `/api/v1/bookclubs` | Create a new book club |
+| `DELETE` | `/api/v1/bookclubs/{club_id}` | Delete a book club you own |
+| `GET` | `/api/v1/bookclubs/{club_id}` | Get club details and member count |
+| `PATCH` | `/api/v1/bookclubs/{club_id}` | Update a book club you own |
+| `POST` | `/api/v1/bookclubs/{club_id}/join` | Join a book club |
+| `POST` | `/api/v1/bookclubs/{club_id}/leave` | Leave a book club |
+
+### **Books**
+| Method | Endpoint | Description |
+|--------|-----------|-------------|
+| `POST` | `/api/v1/books/{club_id}/` | Create a new book in club |
+| `GET` | `/api/v1/books/{club_id}/` | Get all club books |
+| `DELETE` | `/api/v1/books/{club_id}/{book_id}` | Delete an existing book from club |
+| `PATCH` | `/api/v1/books/{club_id}/books/{book_id}` | Toggle book status (Reading OR Finished) |
+
+### **Admin**
+| Method | Endpoint | Description |
+|--------|-----------|-------------|
+| `POST` | `/api/v1/admin` | Create new admin account |
+| `GET` | `/api/v1/admin/users` | Get all users |
+| `GET` | `/api/v1/admin/clubs` | Get all book clubs (Public and Private) |
+| `DELETE` | `/api/v1/admin/users/{user_id}` | Delete a user |
+| `DELETE` | `/api/v1/admin/bookclubs/{club_id}` | Delete a book club |
+
+### **Messages**
+| Method | Endpoint | Description |
+|--------|-----------|-------------|
+| `GET` | `/api/v1/bookclubs/{club_id}/messages` | List Messages For Club |
+| `POST` | `/api/v1/bookclubs/{club_id}/messages` | Create Message For Club |
 
 ### **Default**
 | Method | Endpoint | Description |
 |--------|-----------|-------------|
-| `GET` | `/ping` | Check API health |
+| `GET` | `/ping` | Ping (Health Check) |
 
 ---
 
