@@ -99,30 +99,6 @@ Users can register, browse existing clubs, and create new ones — all managed t
 | Method | Endpoint | Description |
 |--------|-----------|-------------|
 | `GET` | `/ping` | Ping (Health Check) |
-
----
-
-## Setup
-
-### Open a Terminal Locally
-
-#### **Make sure you have docker installed first: https://www.docker.com/products/docker-desktop/**
-You can check if you have it installed by getting the version inside your terminal:
-```bash
-docker --version
-```
-Once Docker is installed you can run StoryMode using the command below.
-
-#### To run:
-```bash
-docker compose up --build
-```
-
-#### To clear data:
-```bash
-docker compose down -v
-```
-
 The link to the website will appear inside the terminal: http://localhost:5173/
 
 Interactive documentation for testing endpoints can be accessed here: http://localhost:8000/docs/
