@@ -1,6 +1,6 @@
 # StoryMode Installation Guide
 
-## Non-Docker:
+## Non-Docker
 ### Dev: Backend
 cd backend
 
@@ -22,9 +22,6 @@ npm run dev
 
 ---
 ## Docker
-docker compose up --build
-
-
 ### Open a Terminal Locally
 
 #### **Make sure you have docker installed first: https://www.docker.com/products/docker-desktop/**
@@ -32,7 +29,7 @@ You can check if you have it installed by getting the version inside your termin
 ```bash
 docker --version
 ```
-Once Docker is installed you can run StoryMode using the command below.
+Once Docker is installed you can run StoryMode using the command below (you may need to compose down first).
 
 #### To run:
 ```bash
