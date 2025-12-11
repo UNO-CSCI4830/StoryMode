@@ -80,6 +80,7 @@ Users can register, browse existing clubs, and create new ones — all managed t
 
 ### **Admin**
 > ⚠️ **Backend Only:** These endpoints do not have a public frontend interface. They are intended to be executed directly via the **[Swagger UI](/docs)** or API Client (Postman).
+
 | Method | Endpoint | Description |
 |--------|-----------|-------------|
 | `POST` | `/api/v1/admin` | Create new admin account |
@@ -123,4 +124,5 @@ docker compose down -v
 ```
 
 The link to the website will appear inside the terminal: http://localhost:5173/
+
 Interactive documentation for testing endpoints can be accessed here: http://localhost:8000/docs/
