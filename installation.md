@@ -12,6 +12,7 @@ cp .env.example .env
 
 uvicorn app.main:app --reload
 
+
 ### Dev: Frontend
 cp .env.example .env
 
@@ -19,6 +20,7 @@ npm i
 
 npm run dev
 
+---
 ## Docker
 docker compose up --build
 
